@@ -18,7 +18,7 @@ const SlugField: FC<ISlugField> = ({ generate, register, error }) => {
 				{...register('slug', {
 					required: 'Slug is required!',
 				})}
-				placeholder="Icon"
+				placeholder="Slug"
 				error={error}
 			/>
 			<div className={styles.badge} onClick={generate}>

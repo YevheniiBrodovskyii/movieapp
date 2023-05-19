@@ -8,6 +8,8 @@ import { useAuth } from '@/hooks/useAuth'
 
 import { TypeComponentAuthFields } from '@/shared/types/auth.types'
 
+//Dynamicznie zaimportowany komponent CheckRole
+
 const DynamicCheckRole = dynamic(() => import('./CheckRole'), { ssr: false })
 
 const AuthProvider: FC<TypeComponentAuthFields> = ({
@@ -19,16 +21,18 @@ const AuthProvider: FC<TypeComponentAuthFields> = ({
 
 	const { pathname } = useRouter()
 
+	//Sprawdzanie accessToken podczas montowania komponentu
+
 	useEffect(() => {
 		const accessToken = Cookies.get('accessToken')
 		if (accessToken) checkAuth()
 	}, [])
-
+	//Sprawdzanie refreshToken po zmianie ścieżki strony
 	useEffect(() => {
 		const refreshToken = Cookies.get('refreshToken')
 		if (!refreshToken && user) logout()
 	}, [pathname])
-
+	//Sprawdzanie ról użytkowników i renderowanie komponentów w zależności od warunków
 	return !isOnlyAdmin && !isOnlyUser ? (
 		<>{children}</>
 	) : (
