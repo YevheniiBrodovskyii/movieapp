@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic'
 import React, { FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { stripHtml } from 'string-strip-html'
 
 import SkeletonLoader from '@/components/ui/SkeletonLoader'
 import AdminNavigation from '@/components/ui/admin-navigation/AdminNavigation'
@@ -19,10 +18,6 @@ import formStyles from '../../../ui/form-elements/admin-form.module.scss'
 import { IActorEditInput } from './actor-edit.interface'
 import { useActorEdit } from './useActorEdit'
 
-const DynamicTextEditor = dynamic(
-	() => import('@/ui/form-elements/TextEditor'),
-	{ ssr: false }
-)
 const GenreEdit: FC = () => {
 	const {
 		handleSubmit,
