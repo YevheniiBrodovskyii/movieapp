@@ -12,36 +12,36 @@ import { toastError } from '@/utils/toast-error'
 import { IMovieEditInput } from './movie-edit.interface'
 
 export const useMovieEdit = (setValue: UseFormSetValue<IMovieEditInput>) => {
-	const { push, query } = useRouter()
+	const { query, push } = useRouter()
 
 	const movieId = String(query.id)
 
 	const { isLoading } = useQuery(
-		['Movie', movieId],
+		['movie', movieId],
 		() => MovieService.getById(movieId),
 		{
-			onSuccess: ({ data }) => {
+			onSuccess({ data }) {
 				getKeys(data).forEach((key) => {
 					setValue(key, data[key])
 				})
 			},
 			onError(error) {
-				toastError(error, 'Get Movie')
+				toastError(error, 'Get movie')
 			},
 			enabled: !!query.id,
 		}
 	)
 
 	const { mutateAsync } = useMutation(
-		'update Movie',
+		'update movie',
 		(data: IMovieEditInput) => MovieService.updateMovie(movieId, data),
 		{
 			onError(error) {
-				toastError(error, 'Update Movie')
+				toastError(error, 'Update movie')
 			},
 			onSuccess() {
-				toastr.success('Update Movie', 'update was successful')
-				push(getAdminUrl('Movies'))
+				toastr.success('Update movie', 'update was successful')
+				push(getAdminUrl('movies'))
 			},
 		}
 	)

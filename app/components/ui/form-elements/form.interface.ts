@@ -22,7 +22,7 @@ export interface ITextEditor extends Omit<TypeEditorPropsField, 'editorState'> {
 
 export interface IUploadField {
 	folder?: string
-	value?: string
+	image?: string
 	onChange: (...event: any[]) => void
 	placeholder: string
 	error?: FieldError
