@@ -1,38 +1,37 @@
-import React, { FC } from 'react'
-
-import AdminNavigation from '@/components/ui/admin-navigation/AdminNavigation'
-import AdminHeader from '@/components/ui/admin-table/AdminHeader/AdminHeader'
-import AdminTable from '@/components/ui/admin-table/AdminTable/AdminTable'
-import Heading from '@/components/ui/heading/Heading'
-
-import Meta from '@/utils/meta/Meta'
-
 import { useGenres } from './useGenres'
+import { FC } from 'react'
+
+import AdminNavigation from '@/ui/admin-navigation/AdminNavigation'
+import AdminHeader from '@/ui/admin-table/AdminHeader/AdminHeader'
+import AdminTable from '@/ui/admin-table/AdminTable/AdminTable'
+import Heading from '@/ui/heading/Heading'
+
+import { Meta } from '@/utils/meta'
 
 const GenreList: FC = () => {
 	const {
-		handleSearch,
-		isLoading,
-		searchTerm,
-		data,
-		deleteAsync,
 		createAsync,
+		data,
+		isLoading,
+		deleteAsync,
+		searchTerm,
+		handleSearch,
 	} = useGenres()
+
 	return (
 		<Meta title="Genres">
 			<AdminNavigation />
 			<Heading title="Genres" />
-
 			<AdminHeader
-				handleSearch={handleSearch}
-				searchTerm={searchTerm}
 				onClick={createAsync}
+				searchTerm={searchTerm}
+				handleSearch={handleSearch}
 			/>
 			<AdminTable
+				tableItems={data || []}
+				headerItems={['Name', 'Slug']}
 				isLoading={isLoading}
 				removeHandler={deleteAsync}
-				headerItems={['Name', 'Slug']}
-				tableItems={data || []}
 			/>
 		</Meta>
 	)

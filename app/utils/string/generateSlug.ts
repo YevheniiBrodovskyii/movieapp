@@ -20,7 +20,7 @@ const translit = (str: string): string => {
 	return res
 }
 
-export const generateSlug = (str: string): string => {
+const generateSlug = (str: string): string => {
 	let url: string = str.replace(/[\s]+/gi, '-')
 	url = translit(url)
 	// eslint-disable-next-line
@@ -31,3 +31,5 @@ export const generateSlug = (str: string): string => {
 		.toLowerCase()
 	return url
 }
+
+export default generateSlug

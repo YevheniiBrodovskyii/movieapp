@@ -1,7 +1,8 @@
-import { getAdminHomeUrl } from 'config/url.config'
 import { FC } from 'react'
 
 import { useAuth } from '@/hooks/useAuth'
+
+import { getAdminHomeUrl } from '@/configs/url.config'
 
 import MenuItem from '../MenuItem'
 

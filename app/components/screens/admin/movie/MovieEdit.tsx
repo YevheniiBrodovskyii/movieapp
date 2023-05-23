@@ -2,23 +2,22 @@ import dynamic from 'next/dynamic'
 import { FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import SkeletonLoader from '@/components/ui/SkeletonLoader'
-
 import AdminNavigation from '@/ui/admin-navigation/AdminNavigation'
 import Button from '@/ui/form-elements/Button'
 import Field from '@/ui/form-elements/Field'
 import SlugField from '@/ui/form-elements/SlugField/SlugField'
 import UploadField from '@/ui/form-elements/UploadField/UploadField'
 import Heading from '@/ui/heading/Heading'
+import SkeletonLoader from '@/ui/skeleton-loader/SkeletonLoader'
 
-import Meta from '@/utils/meta/Meta'
-import { generateSlug } from '@/utils/string/generateSlug'
+import { Meta } from '@/utils/meta'
+import generateSlug from '@/utils/string/generateSlug'
 
-import formStyles from '../../../ui/form-elements/admin-form.module.scss'
-import { useAdminActors } from '../actor/useAdminActors'
+import formStyles from '../../../shared/admin/adminForm.module.scss'
 
 import { IMovieEditInput } from './movie-edit.interface'
-import { useAdminGenres } from './useAdminGenre'
+import { useAdminActors } from './useAdminActors'
+import { useAdminGenres } from './useAdminGenres'
 import { useMovieEdit } from './useMovieEdit'
 
 const DynamicSelect = dynamic(() => import('@/ui/select/Select'), {

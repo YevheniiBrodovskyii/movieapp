@@ -1,5 +1,3 @@
-import { getAdminUrl } from 'config/url.config'
-import { error } from 'console'
 import { ChangeEvent, useMemo, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { toastr } from 'react-redux-toastr'
@@ -8,10 +6,12 @@ import { ITableItem } from '@/components/ui/admin-table/AdminTable/admin-table.i
 
 import { useDebounce } from '@/hooks/useDebounce'
 
-import { UserService } from '@/services/user.service'
+import { UserService } from '@/services/user/user.service'
 
+import { toastError } from '@/utils/api/withToastrErrorRedux'
 import { convertMongoDate } from '@/utils/date/convertMongoDate'
-import { toastError } from '@/utils/toast-error'
+
+import { getAdminUrl } from '@/configs/url.config'
 
 export const useUsers = () => {
 	const [searchTerm, setSearchTerm] = useState('')
@@ -19,7 +19,7 @@ export const useUsers = () => {
 
 	const queryData = useQuery(
 		['user list', debouncedSearch],
-		() => UserService.getAll(debouncedSearch),
+		() => UserService.getUsers(debouncedSearch),
 		{
 			select: ({ data }) =>
 				data.map(
@@ -29,8 +29,8 @@ export const useUsers = () => {
 						items: [user.email, convertMongoDate(user.createdAt)],
 					})
 				),
-			onError: (error) => {
-				toastError(error, 'User list')
+			onError(error) {
+				toastError(error, 'user list')
 			},
 		}
 	)
@@ -40,13 +40,13 @@ export const useUsers = () => {
 	}
 
 	const { mutateAsync: deleteAsync } = useMutation(
-		['delete user', debouncedSearch],
+		'delete user',
 		(userId: string) => UserService.deleteUser(userId),
 		{
-			onError: (error) => {
+			onError(error) {
 				toastError(error, 'Delete user')
 			},
-			onSuccess: () => {
+			onSuccess() {
 				toastr.success('Delete user', 'delete was successful')
 				queryData.refetch()
 			},

@@ -1,23 +1,21 @@
 import cn from 'classnames'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { FC } from 'react'
+import { FC } from 'react'
 
 import styles from './AdminNavigation.module.scss'
 import { INavItem } from './admin-navigation.interface'
 
-const AdminNavItem: FC<{ item: INavItem }> = ({ item: { link, title } }) => {
+const AdminNavItem: FC<{ navItem: INavItem }> = ({ navItem }) => {
 	const { asPath } = useRouter()
 
 	return (
 		<li>
 			<Link
-				href={link}
-				className={cn({
-					[styles.active]: asPath == link,
-				})}
+				href={navItem.link}
+				className={cn({ [styles.active]: asPath === navItem.link })}
 			>
-				{title}
+				{navItem.title}
 			</Link>
 		</li>
 	)

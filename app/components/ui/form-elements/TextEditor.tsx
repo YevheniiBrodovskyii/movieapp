@@ -2,35 +2,35 @@ import cn from 'classnames'
 import { ContentState, EditorState, convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
 import htmlToDraft from 'html-to-draftjs'
-import React, { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
 import { ITextEditor } from './form.interface'
+
 import styles from './form.module.scss'
 
 const TextEditor: FC<ITextEditor> = ({
-	onChange,
-	value,
 	placeholder,
+	onChange,
 	error,
+	value,
 }) => {
 	const [editorState, setEditorState] = useState(EditorState.createEmpty())
+
 	const [isUpdated, setIsUpdated] = useState(false)
 
 	useEffect(() => {
-		if (isUpdated) return
-
-		const defaultValue = value || ''
-		const blocksFromHtml = htmlToDraft(defaultValue)
-
-		const contentState = ContentState.createFromBlockArray(
-			blocksFromHtml.contentBlocks,
-			blocksFromHtml.entityMap
-		)
-
-		const newEditorState = EditorState.createWithContent(contentState)
-		setEditorState(newEditorState)
+		if (!isUpdated) {
+			const defaultValue = value ? value : ''
+			const blocksFromHtml = htmlToDraft(defaultValue)
+			const contentState = ContentState.createFromBlockArray(
+				blocksFromHtml.contentBlocks,
+				blocksFromHtml.entityMap
+			)
+			const newEditorState = EditorState.createWithContent(contentState)
+			setEditorState(newEditorState)
+		}
 	}, [value, isUpdated])
 
 	const onEditorStateChange = (editorState: EditorState) => {
@@ -44,6 +44,7 @@ const TextEditor: FC<ITextEditor> = ({
 		<div className={cn(styles.common, styles.editorWrapper, 'animate-fade')}>
 			<label>
 				<span>{placeholder}</span>
+
 				<div className={styles.wrapper}>
 					<Editor
 						toolbarClassName={styles.toolbar}
@@ -52,13 +53,17 @@ const TextEditor: FC<ITextEditor> = ({
 						onEditorStateChange={onEditorStateChange}
 						spellCheck
 						toolbar={{
-							options: ['inline', 'list'],
+							options: ['inline', 'blockType', 'list'],
 							inline: {
 								inDropdown: false,
 								className: undefined,
 								component: undefined,
 								dropdownClassName: undefined,
 								options: ['bold', 'italic', 'underline', 'strikethrough'],
+							},
+							blockType: {
+								inDropdown: false,
+								options: [],
 							},
 							list: {
 								inDrodown: false,

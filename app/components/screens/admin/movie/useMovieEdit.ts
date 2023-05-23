@@ -1,13 +1,14 @@
-import { getAdminUrl } from 'config/url.config'
 import { useRouter } from 'next/router'
 import { SubmitHandler, UseFormSetValue } from 'react-hook-form'
 import { useMutation, useQuery } from 'react-query'
 import { toastr } from 'react-redux-toastr'
 
-import { MovieService } from '@/services/movie.service'
+import { MovieService } from '@/services/movie/movie.service'
 
-import { getKeys } from '@/utils/folders/getKeys'
-import { toastError } from '@/utils/toast-error'
+import { toastError } from '@/utils/api/withToastrErrorRedux'
+import { getKeys } from '@/utils/object/getKeys'
+
+import { getAdminUrl } from '@/configs/url.config'
 
 import { IMovieEditInput } from './movie-edit.interface'
 
@@ -34,7 +35,7 @@ export const useMovieEdit = (setValue: UseFormSetValue<IMovieEditInput>) => {
 
 	const { mutateAsync } = useMutation(
 		'update movie',
-		(data: IMovieEditInput) => MovieService.updateMovie(movieId, data),
+		(data: IMovieEditInput) => MovieService.update(movieId, data),
 		{
 			onError(error) {
 				toastError(error, 'Update movie')

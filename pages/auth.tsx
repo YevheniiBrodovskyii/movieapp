@@ -1,8 +1,8 @@
-import React from 'react'
+import { NextPage } from 'next'
 
 import Auth from '@/components/screens/auth/Auth'
 
-const AuthPage = () => {
+const AuthPage: NextPage = () => {
 	return <Auth />
 }
 

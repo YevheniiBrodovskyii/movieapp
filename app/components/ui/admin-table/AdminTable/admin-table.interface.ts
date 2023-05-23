@@ -6,5 +6,5 @@ export interface ITableItem {
 
 export interface IAdminTableItem {
 	tableItem: ITableItem
-	removeHandler: () => void
+	removeHandler: (id: string) => void
 }

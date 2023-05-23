@@ -1,18 +1,18 @@
-import { getAdminUrl } from 'config/url.config'
+import { IActorEditInput } from './actor-edit.interface'
 import { useRouter } from 'next/router'
 import { SubmitHandler, UseFormSetValue } from 'react-hook-form'
 import { useMutation, useQuery } from 'react-query'
 import { toastr } from 'react-redux-toastr'
 
-import { ActorService } from '@/services/actor.service'
+import { ActorService } from '@/services/actor/actor.service'
 
-import { getKeys } from '@/utils/folders/getKeys'
-import { toastError } from '@/utils/toast-error'
+import { toastError } from '@/utils/api/withToastrErrorRedux'
+import { getKeys } from '@/utils/object/getKeys'
 
-import { IActorEditInput } from './actor-edit.interface'
+import { getAdminUrl } from '@/configs/url.config'
 
 export const useActorEdit = (setValue: UseFormSetValue<IActorEditInput>) => {
-	const { push, query } = useRouter()
+	const { query, push } = useRouter()
 
 	const actorId = String(query.id)
 
@@ -20,13 +20,13 @@ export const useActorEdit = (setValue: UseFormSetValue<IActorEditInput>) => {
 		['actor', actorId],
 		() => ActorService.getById(actorId),
 		{
-			onSuccess: ({ data }) => {
+			onSuccess({ data }) {
 				getKeys(data).forEach((key) => {
 					setValue(key, data[key])
 				})
 			},
 			onError(error) {
-				toastError(error, 'Get Actor')
+				toastError(error, 'Get actor')
 			},
 			enabled: !!query.id,
 		}
@@ -34,13 +34,13 @@ export const useActorEdit = (setValue: UseFormSetValue<IActorEditInput>) => {
 
 	const { mutateAsync } = useMutation(
 		'update actor',
-		(data: IActorEditInput) => ActorService.updateActor(actorId, data),
+		(data: IActorEditInput) => ActorService.update(actorId, data),
 		{
 			onError(error) {
-				toastError(error, 'Update Actor')
+				toastError(error, 'Update actor')
 			},
 			onSuccess() {
-				toastr.success('Update Actor', 'update was successful')
+				toastr.success('Update actor', 'update was successful')
 				push(getAdminUrl('actors'))
 			},
 		}

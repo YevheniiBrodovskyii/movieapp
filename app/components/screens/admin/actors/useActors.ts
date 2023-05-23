@@ -1,17 +1,17 @@
-import { getAdminUrl } from 'config/url.config'
-import { error } from 'console'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useMemo, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { toastr } from 'react-redux-toastr'
 
-import { ITableItem } from '@/components/ui/admin-table/AdminTable/admin-table.interface'
+import { ITableItem } from '@/ui/admin-table/AdminTable/admin-table.interface'
 
 import { useDebounce } from '@/hooks/useDebounce'
 
-import { ActorService } from '@/services/actor.service'
+import { ActorService } from '@/services/actor/actor.service'
 
-import { toastError } from '@/utils/toast-error'
+import { toastError } from '@/utils/api/withToastrErrorRedux'
+
+import { getAdminUrl } from '@/configs/url.config'
 
 export const useActors = () => {
 	const [searchTerm, setSearchTerm] = useState('')
@@ -29,8 +29,8 @@ export const useActors = () => {
 						items: [actor.name, String(actor.countMovies)],
 					})
 				),
-			onError: (error) => {
-				toastError(error, 'Actor list')
+			onError(error) {
+				toastError(error, 'actor list')
 			},
 		}
 	)
@@ -42,28 +42,28 @@ export const useActors = () => {
 	const { push } = useRouter()
 
 	const { mutateAsync: createAsync } = useMutation(
-		['create actor', debouncedSearch],
+		'create actor',
 		() => ActorService.create(),
 		{
-			onError: (error) => {
-				toastError(error, 'Create Actor')
+			onError(error) {
+				toastError(error, 'Create actor')
 			},
-			onSuccess: ({ data: _id }) => {
-				toastr.success('Create Actor', 'create was successful')
+			onSuccess({ data: _id }) {
+				toastr.success('Create actor', 'create was successful')
 				push(getAdminUrl(`actor/edit/${_id}`))
 			},
 		}
 	)
 
 	const { mutateAsync: deleteAsync } = useMutation(
-		['delete Actor', debouncedSearch],
-		(actorId: string) => ActorService.deleteActor(actorId),
+		'delete actor',
+		(actorId: string) => ActorService.delete(actorId),
 		{
-			onError: (error) => {
-				toastError(error, 'Delete Actor')
+			onError(error) {
+				toastError(error, 'Delete actor')
 			},
-			onSuccess: () => {
-				toastr.success('Delete Actor', 'delete was successful')
+			onSuccess() {
+				toastr.success('Delete actor', 'delete was successful')
 				queryData.refetch()
 			},
 		}

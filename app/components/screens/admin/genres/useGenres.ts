@@ -1,17 +1,17 @@
-import { getAdminUrl } from 'config/url.config'
-import { error } from 'console'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useMemo, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { toastr } from 'react-redux-toastr'
 
-import { ITableItem } from '@/components/ui/admin-table/AdminTable/admin-table.interface'
+import { ITableItem } from '@/ui/admin-table/AdminTable/admin-table.interface'
 
 import { useDebounce } from '@/hooks/useDebounce'
 
-import { GenreService } from '@/services/genre.service'
+import { GenreService } from '@/services/genre/genre.service'
 
-import { toastError } from '@/utils/toast-error'
+import { toastError } from '@/utils/api/withToastrErrorRedux'
+
+import { getAdminUrl } from '@/configs/url.config'
 
 export const useGenres = () => {
 	const [searchTerm, setSearchTerm] = useState('')
@@ -29,8 +29,8 @@ export const useGenres = () => {
 						items: [genre.name, genre.slug],
 					})
 				),
-			onError: (error) => {
-				toastError(error, 'Genre list')
+			onError(error) {
+				toastError(error, 'genre list')
 			},
 		}
 	)
@@ -41,30 +41,30 @@ export const useGenres = () => {
 
 	const { push } = useRouter()
 
-	const { mutateAsync: deleteAsync } = useMutation(
-		['delete genre', debouncedSearch],
-		(genreId: string) => GenreService.deleteGenre(genreId),
+	const { mutateAsync: createAsync } = useMutation(
+		'create genre',
+		() => GenreService.create(),
 		{
-			onError: (error) => {
-				toastError(error, 'Delete Genre')
+			onError(error) {
+				toastError(error, 'Create genre')
 			},
-			onSuccess: () => {
-				toastr.success('Delete Genre', 'delete was successful')
-				queryData.refetch()
+			onSuccess({ data: _id }) {
+				toastr.success('Create genre', 'create was successful')
+				push(getAdminUrl(`genre/edit/${_id}`))
 			},
 		}
 	)
 
-	const { mutateAsync: createAsync } = useMutation(
-		['create genre', debouncedSearch],
-		() => GenreService.create(),
+	const { mutateAsync: deleteAsync } = useMutation(
+		'delete genre',
+		(genreId: string) => GenreService.delete(genreId),
 		{
-			onError: (error) => {
-				toastError(error, 'Create Genre')
+			onError(error) {
+				toastError(error, 'Delete genre')
 			},
-			onSuccess: ({ data: _id }) => {
-				toastr.success('Create Genre', 'create was successful')
-				push(getAdminUrl(`genre/edit/${_id}`))
+			onSuccess() {
+				toastr.success('Delete genre', 'delete was successful')
+				queryData.refetch()
 			},
 		}
 	)

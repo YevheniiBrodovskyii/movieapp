@@ -1,6 +1,6 @@
 import { ChangeEvent, FC } from 'react'
 
-import MaterialIcon from '../MaterialIcon'
+import { MaterialIcon } from '../icons/MaterialIcon'
 
 import styles from './SearchField.module.scss'
 
@@ -9,7 +9,7 @@ interface ISearchField {
 	handleSearch: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
-const SearchField: FC<ISearchField> = ({ searchTerm, handleSearch }) => {
+const SearchField: FC<ISearchField> = ({ handleSearch, searchTerm }) => {
 	return (
 		<div className={styles.search}>
 			<MaterialIcon name="MdSearch" />

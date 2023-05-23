@@ -1,6 +1,6 @@
-import { IMenu } from './menu.interface'
+import { IMenu } from './menu.types'
 
-export const firstMenu: IMenu = {
+const firstMenu: IMenu = {
 	title: 'Menu',
 	items: [
 		{
@@ -26,7 +26,7 @@ export const firstMenu: IMenu = {
 	],
 }
 
-export const userMenu: IMenu = {
+const userMenu: IMenu = {
 	title: 'General',
 	items: [],
 }

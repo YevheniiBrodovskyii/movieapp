@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 
-import SkeletonLoader from '../../SkeletonLoader'
+import SkeletonLoader from '../../skeleton-loader/SkeletonLoader'
 
 import styles from './AdminTable.module.scss'
 import AdminTableHeader from './AdminTableHeader'
@@ -9,16 +9,16 @@ import { ITableItem } from './admin-table.interface'
 
 interface IAdminTable {
 	tableItems: ITableItem[]
-	isLoading: boolean
 	headerItems: string[]
+	isLoading: boolean
 	removeHandler: (id: string) => void
 }
 
 const AdminTable: FC<IAdminTable> = ({
+	tableItems,
 	headerItems,
 	isLoading,
 	removeHandler,
-	tableItems,
 }) => {
 	return (
 		<div>
@@ -30,8 +30,8 @@ const AdminTable: FC<IAdminTable> = ({
 				tableItems.map((tableItem) => (
 					<AdminTableItem
 						key={tableItem._id}
-						removeHandler={() => removeHandler(tableItem._id)}
 						tableItem={tableItem}
+						removeHandler={removeHandler}
 					/>
 				))
 			) : (

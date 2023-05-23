@@ -1,11 +1,12 @@
 import cn from 'classnames'
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
 
 import { IField } from './form.interface'
+
 import styles from './form.module.scss'
 
 const Field = forwardRef<HTMLInputElement, IField>(
-	({ placeholder, error, type = '', style, ...rest }, ref) => {
+	({ placeholder, error, type = 'text', style, ...rest }, ref) => {
 		return (
 			<div className={cn(styles.common, styles.field)} style={style}>
 				<label>

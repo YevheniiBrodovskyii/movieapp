@@ -1,8 +1,8 @@
-import React, { ChangeEvent, FC } from 'react'
+import { ChangeEvent, FC } from 'react'
 
 import SearchField from '../../search-field/SearchField'
+import AdminCreateButton from '../AdminCreateButton/AdminCreateButton'
 
-import AdminCreateButton from './AdminCreateButton'
 import styles from './AdminHeader.module.scss'
 
 interface IAdminHeader {
@@ -18,7 +18,7 @@ const AdminHeader: FC<IAdminHeader> = ({
 }) => {
 	return (
 		<div className={styles.header}>
-			<SearchField searchTerm={searchTerm} handleSearch={handleSearch} />
+			<SearchField handleSearch={handleSearch} searchTerm={searchTerm} />
 			{onClick && <AdminCreateButton onClick={onClick} />}
 		</div>
 	)

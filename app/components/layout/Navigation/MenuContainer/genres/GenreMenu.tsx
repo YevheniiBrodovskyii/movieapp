@@ -1,12 +1,10 @@
-import React, { FC } from 'react'
-
-import SkeletonLoader from '@/components/ui/SkeletonLoader'
+import SkeletonLoader from '@/ui/skeleton-loader/SkeletonLoader'
 
 import Menu from '../Menu'
 
 import { usePopularGenres } from './usePopularGenres'
 
-const GenreMenu: FC = () => {
+const GenreMenu = () => {
 	const { isLoading, data } = usePopularGenres()
 
 	return isLoading ? (
@@ -14,7 +12,12 @@ const GenreMenu: FC = () => {
 			<SkeletonLoader count={5} className="h-7 mt-6" />
 		</div>
 	) : (
-		<Menu menu={{ title: 'Popular genres', items: data || [] }} />
+		<Menu
+			menu={{
+				title: 'Popular genres',
+				items: data || [],
+			}}
+		/>
 	)
 }
 

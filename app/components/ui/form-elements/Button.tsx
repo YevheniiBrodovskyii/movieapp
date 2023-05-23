@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { FC } from 'react'
+import { FC } from 'react'
 
 import { IButton } from './form.interface'
 import styles from './form.module.scss'

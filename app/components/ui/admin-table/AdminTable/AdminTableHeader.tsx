@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { FC } from 'react'
+import { FC } from 'react'
 
 import styles from './AdminTable.module.scss'
 
@@ -9,6 +9,7 @@ const AdminTableHeader: FC<{ headerItems: string[] }> = ({ headerItems }) => {
 			{headerItems.map((value) => (
 				<div key={value}>{value}</div>
 			))}
+
 			<div>Actions</div>
 		</div>
 	)

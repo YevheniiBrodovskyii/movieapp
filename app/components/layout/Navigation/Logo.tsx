@@ -1,17 +1,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { FC } from 'react'
+import { FC } from 'react'
 
 import logoImage from '@/assets/images/logo.svg'
 
 const Logo: FC = () => {
 	return (
-		<Link className="px-layout mb-10 block" href={'/'}>
+		<Link href="/" className="px-layout mb-10 block">
 			<Image
 				src={logoImage}
 				width={247}
 				height={34}
-				alt="Online cinema"
+				alt="Movie app"
 				draggable={false}
 			/>
 		</Link>

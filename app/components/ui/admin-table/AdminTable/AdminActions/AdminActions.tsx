@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
-import React, { FC } from 'react'
+import { FC } from 'react'
 
-import MaterialIcon from '@/components/ui/MaterialIcon'
+import { MaterialIcon } from '../../../icons/MaterialIcon'
 
 import styles from './AdminActions.module.scss'
 

@@ -1,18 +1,18 @@
-import { getAdminUrl } from 'config/url.config'
+import { IGenreEditInput } from './genre-edit.interface'
 import { useRouter } from 'next/router'
 import { SubmitHandler, UseFormSetValue } from 'react-hook-form'
 import { useMutation, useQuery } from 'react-query'
 import { toastr } from 'react-redux-toastr'
 
-import { GenreService } from '@/services/genre.service'
+import { GenreService } from '@/services/genre/genre.service'
 
-import { getKeys } from '@/utils/folders/getKeys'
-import { toastError } from '@/utils/toast-error'
+import { toastError } from '@/utils/api/withToastrErrorRedux'
+import { getKeys } from '@/utils/object/getKeys'
 
-import { IGenreEditInput } from './genre-edit.interface'
+import { getAdminUrl } from '@/configs/url.config'
 
 export const useGenreEdit = (setValue: UseFormSetValue<IGenreEditInput>) => {
-	const { push, query } = useRouter()
+	const { query, push } = useRouter()
 
 	const genreId = String(query.id)
 
@@ -20,7 +20,7 @@ export const useGenreEdit = (setValue: UseFormSetValue<IGenreEditInput>) => {
 		['genre', genreId],
 		() => GenreService.getById(genreId),
 		{
-			onSuccess: ({ data }) => {
+			onSuccess({ data }) {
 				getKeys(data).forEach((key) => {
 					setValue(key, data[key])
 				})
@@ -34,7 +34,7 @@ export const useGenreEdit = (setValue: UseFormSetValue<IGenreEditInput>) => {
 
 	const { mutateAsync } = useMutation(
 		'update genre',
-		(data: IGenreEditInput) => GenreService.updateGenre(genreId, data),
+		(data: IGenreEditInput) => GenreService.update(genreId, data),
 		{
 			onError(error) {
 				toastError(error, 'Update genre')
