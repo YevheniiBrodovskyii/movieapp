@@ -17,7 +17,7 @@ const SlideItem: FC<ISlideItem> = ({ slide, buttonTitle = 'Watch' }) => {
 		<div className={styles.slide}>
 			{slide.bigPoster && (
 				<Image
-					layout="fill"
+					fill
 					className={styles.image}
 					src={slide.bigPoster}
 					alt={slide.title}
